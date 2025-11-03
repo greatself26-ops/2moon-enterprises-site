@@ -61,6 +61,39 @@
       transition: width 1s ease-in-out;
       animation: flow 3s linear infinite;
       box-shadow: 0 0 20px rgba(255,174,0,0.4);
+      .progress-bar-fill::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0.2) 0,
+    rgba(255, 255, 255, 0.2) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  animation: sparkle 2s linear infinite;
+}
+
+@keyframes sparkle {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 0; }
+}
+
+.progress-bar-fill {
+  position: relative;
+  overflow: hidden;
+  height: 30px;
+  background: linear-gradient(120deg,#fbbf24,#f97316,#ffae00,#f97316,#fbbf24);
+  background-size: 300% 100%;
+  border-radius: 30px;
+  box-shadow: 0 0 20px rgba(255,174,0,0.4);
+  animation: flow 3s linear infinite;
+}
+
     }
     @keyframes flow {
       0% { background-position: 0% 50%; }
@@ -249,3 +282,4 @@
   </script>
 </body>
 </html>
+
