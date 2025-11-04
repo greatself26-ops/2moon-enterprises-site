@@ -76,11 +76,11 @@
       width: 0%;
       background: linear-gradient(90deg, #fbbf24, #f97316);
       border-radius: 30px;
-      transition: width 1.2s ease-in-out;
+      transition: width 1s ease-in-out;
       box-shadow: 0 0 10px rgba(255,174,0,0.4);
     }
 
-    /* Razorpay button near progress */
+    /* Razorpay button */
     .pay-button {
       margin-top: 20px;
     }
@@ -156,13 +156,15 @@
   <section class="progress-container">
     <h2>Your Trust, Our Progress</h2>
     <p>Every contribution brings us closer to our shared vision.</p>
-    <div id="progress-text">Loading data...</div>
-    <div class="progress-bar-bg"><div id="progress-bar" class="progress-bar-fill"></div></div>
+    <div id="progress-text">₹0 raised of ₹1,00,00,000 goal</div>
+    <div class="progress-bar-bg">
+      <div id="progress-bar" class="progress-bar-fill"></div>
+    </div>
     <div id="progress-percent" style="margin-top:8px;font-weight:600;"></div>
     <div id="last-updated" style="font-size:0.85rem;color:#888;margin-top:4px;"></div>
 
     <!-- Razorpay Button -->
-    <div class="pay-button">
+    <div class="pay-button" id="payment-section">
       <form>
         <script src="https://checkout.razorpay.com/v1/payment-button.js"
                 data-payment_button_id="pl_RbMaMRMZ46EBFI"
@@ -172,7 +174,7 @@
     </div>
   </section>
 
-  <!-- TRANSPARENCY SECTION (moved here) -->
+  <!-- TRANSPARENCY SECTION -->
   <section>
     <h2>Promise of Transparency & Purpose</h2>
     <p>
@@ -223,32 +225,13 @@
     <p>📍 Neyveli T.S<br/>📞 Kabilan Natarajan – Manager | 9789246419<br/>✉️ greatself26@gmail.com</p>
   </footer>
 
-  <!-- PROGRESS FETCH SCRIPT -->
+  <!-- MANUAL PROGRESS UPDATE SCRIPT -->
   <script>
-    const SHEET_URL =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQPCkqMgNLdROU4Fm2JYpAnF4w9dQKQ_FXbAnkNBMGf9vbxRGsisMdJvsJI_92JeBzW6kZOisNIAWzl/pub?output=csv";
     const FUNDING_GOAL = 10000000; // ₹1 Crore
-    let displayedTotal = 0;
+    const MANUAL_RAISED = 250000; // <-- ✏️ CHANGE THIS VALUE MANUALLY TO UPDATE PROGRESS
 
-    async function fetchFundingData() {
-      try {
-        const res = await fetch(SHEET_URL, { mode: "cors", cache: "no-cache" });
-        const txt = await res.text();
-        const rows = txt.split(/\r?\n/).map(r => r.split(','));
-        const header = rows[0].map(h => h.trim().replace(/\"/g, ""));
-        const amountIndex = header.findIndex(h => h.toLowerCase().includes("amount supported"));
-        let total = 0;
-        for (let i = 1; i < rows.length; i++) {
-          const val = parseFloat(rows[i][amountIndex]?.replace(/[^0-9.]/g, "")) || 0;
-          total += val;
-        }
-        updateProgress(total);
-      } catch (err) {
-        document.getElementById("progress-text").innerText = "Unable to load funding data.";
-      }
-    }
-
-    function updateProgress(total) {
+    function updateManualProgress() {
+      const total = MANUAL_RAISED;
       const percent = Math.min((total / FUNDING_GOAL) * 100, 100);
       const bar = document.getElementById("progress-bar");
       const text = document.getElementById("progress-text");
@@ -261,9 +244,7 @@
       updated.innerText = "Last updated: " + new Date().toLocaleString();
     }
 
-    fetchFundingData();
-    setInterval(fetchFundingData, 60000);
+    updateManualProgress();
   </script>
 </body>
 </html>
-
