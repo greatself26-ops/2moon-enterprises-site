@@ -69,6 +69,7 @@
       overflow: hidden;
       margin-top: 10px;
       position: relative;
+      cursor: pointer;
     }
 
     .progress-bar-fill {
@@ -76,30 +77,59 @@
       width: 0%;
       background: linear-gradient(90deg, #fbbf24, #f97316);
       border-radius: 30px;
-      transition: width 1s ease-in-out;
+      transition: width 0.8s ease-in-out;
       box-shadow: 0 0 10px rgba(255,174,0,0.4);
     }
 
     /* Razorpay button */
-    .pay-button {
-      margin-top: 20px;
-    }
-
     .razorpay-payment-button {
       background: linear-gradient(90deg,#fbbf24,#f97316) !important;
       color: #fff !important;
       border: none !important;
-      padding: 0.8rem 1.4rem !important;
-      border-radius: 50px !important;
+      padding: 0.6rem 1.2rem !important;
+      border-radius: 40px !important;
       font-weight: 600 !important;
-      box-shadow: 0 0 10px rgba(249,115,22,0.4);
+      box-shadow: 0 0 8px rgba(249,115,22,0.4);
       cursor: pointer;
       transition: 0.3s;
+      font-size: 0.95rem !important;
     }
 
     .razorpay-payment-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 15px rgba(255,174,0,0.6);
+      box-shadow: 0 0 12px rgba(255,174,0,0.6);
+    }
+
+    /* Admin input */
+    .admin-box {
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    .admin-box input {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: none;
+      margin: 0.3rem;
+      font-size: 1rem;
+      width: 180px;
+    }
+
+    .admin-box button {
+      background: linear-gradient(90deg,#fbbf24,#f97316);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .admin-box button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(255,174,0,0.5);
     }
 
     /* Services grid */
@@ -157,20 +187,17 @@
     <h2>Your Trust, Our Progress</h2>
     <p>Every contribution brings us closer to our shared vision.</p>
     <div id="progress-text">₹0 raised of ₹1,00,00,000 goal</div>
-    <div class="progress-bar-bg">
+    <div class="progress-bar-bg" ondblclick="toggleAdmin()">
       <div id="progress-bar" class="progress-bar-fill"></div>
     </div>
     <div id="progress-percent" style="margin-top:8px;font-weight:600;"></div>
-    <div id="last-updated" style="font-size:0.85rem;color:#888;margin-top:4px;"></div>
+    <div id="last-updated" style="font-size:0.85rem;color:#888;margin-top:4px;">Updated: —</div>
 
-    <!-- Razorpay Button -->
-    <div class="pay-button" id="payment-section">
-      <form>
-        <script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI"
-                async>
-        </script>
-      </form>
+    <!-- Hidden Admin Box -->
+    <div class="admin-box" id="adminBox">
+      <input type="password" id="adminPass" placeholder="Enter password" />
+      <input type="number" id="newAmount" placeholder="New amount (₹)" />
+      <button onclick="updateManualProgress()">Update</button>
     </div>
   </section>
 
@@ -200,22 +227,32 @@
       <div class="service-card">
         <h3>🚗 Car Wash at Your Doorstep</h3>
         <p>Convenient car care services available at your home or office.</p>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
+                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
       </div>
       <div class="service-card">
         <h3>🌾 Agri Trade Solutions</h3>
         <p>Empowering farmers and traders with transparent agri-market connections.</p>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
+                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
       </div>
       <div class="service-card">
         <h3>🎓 Career Support & Mentoring</h3>
         <p>Guiding youth with skills, training, and career growth opportunities.</p>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
+                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
       </div>
       <div class="service-card">
         <h3>💼 Business Development</h3>
         <p>Helping startups and MSMEs grow sustainably through expert advice.</p>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
+                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
       </div>
       <div class="service-card">
         <h3>🛠️ Coming Soon</h3>
         <p>More innovative services are on the way — stay tuned!</p>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
+                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
       </div>
     </div>
   </section>
@@ -225,26 +262,57 @@
     <p>📍 Neyveli T.S<br/>📞 Kabilan Natarajan – Manager | 9789246419<br/>✉️ greatself26@gmail.com</p>
   </footer>
 
-  <!-- MANUAL PROGRESS UPDATE SCRIPT -->
+  <!-- PROGRESS SCRIPT -->
   <script>
     const FUNDING_GOAL = 10000000; // ₹1 Crore
-    const MANUAL_RAISED = 250000; // <-- ✏️ CHANGE THIS VALUE MANUALLY TO UPDATE PROGRESS
+    let currentRaised = 250000; // starting amount
 
-    function updateManualProgress() {
-      const total = MANUAL_RAISED;
-      const percent = Math.min((total / FUNDING_GOAL) * 100, 100);
-      const bar = document.getElementById("progress-bar");
-      const text = document.getElementById("progress-text");
-      const pct = document.getElementById("progress-percent");
-      const updated = document.getElementById("last-updated");
+    function updateProgressDisplay() {
+      const percent = Math.min((currentRaised / FUNDING_GOAL) * 100, 100);
+      document.getElementById("progress-bar").style.width = percent.toFixed(2) + "%";
+      document.getElementById("progress-text").innerText =
+        `₹${Math.floor(currentRaised).toLocaleString("en-IN")} raised of ₹${FUNDING_GOAL.toLocaleString("en-IN")} goal`;
+      document.getElementById("progress-percent").innerText = `${percent.toFixed(2)}% funded`;
 
-      bar.style.width = percent.toFixed(2) + "%";
-      text.innerText = `₹${Math.floor(total).toLocaleString("en-IN")} raised of ₹${FUNDING_GOAL.toLocaleString("en-IN")} goal`;
-      pct.innerText = `${percent.toFixed(2)}% funded`;
-      updated.innerText = "Last updated: " + new Date().toLocaleString();
+      const now = new Date();
+      const formatted = now.toLocaleString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      });
+      document.getElementById("last-updated").innerText = `Updated: ${formatted}`;
     }
 
-    updateManualProgress();
+    function toggleAdmin() {
+      const box = document.getElementById("adminBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function updateManualProgress() {
+      const pass = document.getElementById("adminPass").value.trim();
+      const newAmt = parseFloat(document.getElementById("newAmount").value);
+
+      if (pass !== "2moonadmin") {
+        alert("Incorrect password.");
+        return;
+      }
+      if (isNaN(newAmt) || newAmt < 0) {
+        alert("Enter a valid amount.");
+        return;
+      }
+
+      currentRaised = newAmt;
+      updateProgressDisplay();
+      alert("Progress updated successfully!");
+      document.getElementById("newAmount").value = "";
+      document.getElementById("adminPass").value = "";
+      document.getElementById("adminBox").style.display = "none";
+    }
+
+    updateProgressDisplay();
   </script>
 </body>
 </html>
