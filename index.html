@@ -1,318 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2 Moon Enterprises | Official</title>
-  <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #0d0d0d;
-      color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-    }
+<meta charset="UTF-8">
+<title>2 Moon Fundraiser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #000);
+    color: #f5d27a;
+}
 
-    .logo {
-      display: block;
-      margin: 0 auto 1rem;
-      max-width: 220px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(255,165,0,0.4);
-    }
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow {
+    0% { box-shadow: 0 0 10px #d4af37; }
+    50% { box-shadow: 0 0 25px #f5d27a; }
+    100% { box-shadow: 0 0 10px #d4af37; }
+}
 
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.4rem;
-      color: #fbbf24;
-    }
+/* Header */
+header {
+    text-align: center;
+    padding: 30px;
+    animation: fadeIn 1s ease;
+}
+.logo img {
+    width: 120px;
+    border-radius: 10px;
+    border: 2px solid #d4af37;
+    animation: glow 3s infinite;
+}
 
-    .tagline {
-      font-size: 1.1rem;
-      color: #ddd;
-      margin-bottom: 2rem;
-    }
+/* Profile */
+.profile-section {
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 1.5s ease;
+}
+.profile-pic img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 4px solid #d4af37;
+    object-fit: cover;
+    margin-bottom: 20px;
+    animation: glow 4s infinite;
+}
+.story {
+    max-width: 850px;
+    margin: auto;
+    line-height: 1.8;
+}
 
-    section {
-      padding: 1.5rem 1rem;
-      max-width: 900px;
-      margin: auto;
-    }
+/* Progress Bar */
+.progress-container {
+    width: 80%;
+    max-width: 700px;
+    background: #222;
+    border-radius: 30px;
+    margin: 40px auto 10px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 24px;
+    width: 0%;
+    background: linear-gradient(90deg, #d4af37, #f5d27a);
+    transition: width 0.6s ease;
+}
+.progress-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-    h2 {
-      color: #fbbf24;
-      border-left: 5px solid #f97316;
-      padding-left: 10px;
-    }
+/* Admin Panel (Hidden) */
+#adminPanel {
+    display: none;
+    text-align: center;
+    margin-bottom: 40px;
+}
+#adminPanel input {
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    margin: 6px;
+    width: 230px;
+}
+#adminPanel button {
+    padding: 10px 30px;
+    border-radius: 20px;
+    background: #d4af37;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+#adminPanel button:hover {
+    background: #f5d27a;
+}
 
-    /* Progress bar */
-    .progress-container {
-      background: #1a1a1a;
-      padding: 2rem 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 20px rgba(255,165,0,0.15);
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+/* Donate */
+.donate-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.razorpay-payment-button {
+    background: #d4af37 !important;
+    color: #000 !important;
+    padding: 14px 45px !important;
+    border-radius: 30px !important;
+    font-weight: bold !important;
+    animation: glow 2.5s infinite;
+}
 
-    .progress-bar-bg {
-      width: 100%;
-      height: 30px;
-      background: #333;
-      border-radius: 30px;
-      overflow: hidden;
-      margin-top: 10px;
-      position: relative;
-      cursor: pointer;
-    }
+/* Projects */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+    padding: 60px 10%;
+}
+.project-card {
+    background: #141414;
+    border: 1px solid #d4af37;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 20px rgba(212,175,55,0.6);
+}
 
-    .progress-bar-fill {
-      height: 30px;
-      width: 0%;
-      background: linear-gradient(90deg, #fbbf24, #f97316);
-      border-radius: 30px;
-      transition: width 0.8s ease-in-out;
-      box-shadow: 0 0 10px rgba(255,174,0,0.4);
-    }
-
-    /* Razorpay button */
-    .razorpay-payment-button {
-      background: linear-gradient(90deg,#fbbf24,#f97316) !important;
-      color: #fff !important;
-      border: none !important;
-      padding: 0.6rem 1.2rem !important;
-      border-radius: 40px !important;
-      font-weight: 600 !important;
-      box-shadow: 0 0 8px rgba(249,115,22,0.4);
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 0.95rem !important;
-    }
-
-    .razorpay-payment-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 12px rgba(255,174,0,0.6);
-    }
-
-    /* Admin input */
-    .admin-box {
-      margin-top: 20px;
-      text-align: center;
-      display: none;
-    }
-
-    .admin-box input {
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: none;
-      margin: 0.3rem;
-      font-size: 1rem;
-      width: 180px;
-    }
-
-    .admin-box button {
-      background: linear-gradient(90deg,#fbbf24,#f97316);
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .admin-box button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 10px rgba(255,174,0,0.5);
-    }
-
-    /* Services grid */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    .service-card {
-      background: #1a1a1a;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(255,165,0,0.08);
-      transition: 0.3s;
-    }
-
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 20px rgba(255,165,0,0.15);
-    }
-
-    .service-card h3 {
-      color: #fbbf24;
-      margin-bottom: 0.6rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 0.9rem;
-      background: #111;
-      color: #aaa;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.5rem; }
-      .progress-container { padding: 1.2rem; }
-      .service-card { padding: 1rem; }
-    }
-  </style>
+/* Footer */
+footer {
+    background: #050505;
+    padding: 35px;
+    text-align: center;
+}
+.footer-btn {
+    display: inline-block;
+    margin: 12px;
+    padding: 14px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.website-btn {
+    background: #d4af37;
+    color: #000;
+}
+.whatsapp-btn {
+    background: #25D366;
+    color: #000;
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <img src="logo-tagline.jpg" alt="2 Moon Enterprises Logo" class="logo" />
-    <h1>2 Moon Enterprises</h1>
-    <p class="tagline">We Focus on Growth</p>
-  </header>
 
-  <!-- PROGRESS SECTION -->
-  <section class="progress-container">
-    <h2>Your Trust, Our Progress</h2>
-    <p>Every contribution brings us closer to our shared vision.</p>
-    <div id="progress-text">₹0 raised of ₹1,00,00,000 goal</div>
-    <div class="progress-bar-bg" ondblclick="toggleAdmin()">
-      <div id="progress-bar" class="progress-bar-fill"></div>
+<header>
+    <div class="logo">
+        <img src="logo.jpg" alt="Logo" ondblclick="toggleAdminPanel()" />
+
     </div>
-    <div id="progress-percent" style="margin-top:8px;font-weight:600;"></div>
-    <div id="last-updated" style="font-size:0.85rem;color:#888;margin-top:4px;">Updated: —</div>
+</header>
 
-    <!-- Hidden Admin Box -->
-    <div class="admin-box" id="adminBox">
-      <input type="password" id="adminPass" placeholder="Enter password" />
-      <input type="number" id="newAmount" placeholder="New amount (₹)" />
-      <button onclick="updateManualProgress()">Update</button>
+<section class="profile-section">
+    <div class="profile-pic">
+        <img src="profile.jpg" alt="Profile Picture">
     </div>
-  </section>
+    <div class="story">
+        I believe true success is not measured by what we achieve for ourselves, but by what we build for others.
 
-  <!-- TRANSPARENCY SECTION -->
-  <section>
-    <h2>Promise of Transparency & Purpose</h2>
-    <p>
-      At 2 Moon Enterprises, we are committed to honesty, growth, and community value.<br/>
-      Every rupee raised will be used solely for business operations, service expansion, and sustainability initiatives.<br/>
-      All supporters and investors will receive periodic progress updates and transparent reporting.
-    </p>
-  </section>
+My professional journey taught me discipline and resilience, but my heart has always been drawn to a bigger purpose.<br>I dream of creating a self-sustaining world where homeless individuals are given dignity, skills, and hope—not charity, but a chance to stand on their own. A world where stray dogs and vulnerable animals are protected, loved, and never forgotten.
 
-  <!-- ABOUT SECTION -->
-  <section>
-    <h2>About Our Mission</h2>
-    <p>
-      2 Moon Enterprises is dedicated to building sustainable ventures that bring value to individuals and communities alike.
-      Our goal is to raise ₹1 Crore to expand our core services and create meaningful opportunities.
-    </p>
-  </section>
+Through eco-friendly products and afforestation, I want to heal both lives and the land we share.<br> This vision is born from compassion—for people, for animals, and for the earth itself.<br>
 
-  <!-- SERVICES SECTION -->
-  <section>
-    <h2>Our Products & Services</h2>
-    <div class="services">
-      <div class="service-card">
-        <h3>🚗 Car Wash at Your Doorstep</h3>
-        <p>Convenient car care services available at your home or office.</p>
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
-      </div>
-      <div class="service-card">
-        <h3>🌾 Agri Trade Solutions</h3>
-        <p>Empowering farmers and traders with transparent agri-market connections.</p>
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
-      </div>
-      <div class="service-card">
-        <h3>🎓 Career Support & Mentoring</h3>
-        <p>Guiding youth with skills, training, and career growth opportunities.</p>
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
-      </div>
-      <div class="service-card">
-        <h3>💼 Business Development</h3>
-        <p>Helping startups and MSMEs grow sustainably through expert advice.</p>
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
-      </div>
-      <div class="service-card">
-        <h3>🛠️ Coming Soon</h3>
-        <p>More innovative services are on the way — stay tuned!</p>
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-payment_button_id="pl_RbMaMRMZ46EBFI" async></script></form>
-      </div>
+This vision cannot wait.<br>
+Every day without support is another day someone sleeps hungry, and another animal is left without care. Your donation today can provide shelter, food, medical care, and sustainable work—right now. Even the smallest contribution moves this mission forward. Act today and become part of a change that saves lives and restores hope.
     </div>
-  </section>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>📍 Neyveli T.S<br/>📞 Kabilan Natarajan – Manager | 9789246419<br/>✉️ greatself26@gmail.com</p>
-  </footer>
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="progress-text" id="progressText"></div>
 
-  <!-- PROGRESS SCRIPT -->
-  <script>
-    const FUNDING_GOAL = 10000000; // ₹1 Crore
-    let currentRaised = 250000; // starting amount
+<!-- ADMIN PANEL (HIDDEN) -->
+<div id="adminPanel">
+    <input type="password" id="adminPass" placeholder="Admin Password"><br>
+    <input type="number" id="adminAmount" placeholder="Total Raised (₹)"><br>
+    <button onclick="updateProgressAdmin()">Update Progress</button>
+</div>
 
-    function updateProgressDisplay() {
-      const percent = Math.min((currentRaised / FUNDING_GOAL) * 100, 100);
-      document.getElementById("progress-bar").style.width = percent.toFixed(2) + "%";
-      document.getElementById("progress-text").innerText =
-        `₹${Math.floor(currentRaised).toLocaleString("en-IN")} raised of ₹${FUNDING_GOAL.toLocaleString("en-IN")} goal`;
-      document.getElementById("progress-percent").innerText = `${percent.toFixed(2)}% funded`;
+<section class="donate-section">
+    <form>
+        <script src="https://checkout.razorpay.com/v1/payment-button.js"
+            data-payment_button_id="pl_Rx3DgHmSp1Xlpr" async>
+        </script>
+    </form>
+</section>
 
-      const now = new Date();
-      const formatted = now.toLocaleString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-      });
-      document.getElementById("last-updated").innerText = `Updated: ${formatted}`;
-    }
+<section class="projects">
+    <div class="project-card">
+        <h3>Self Sustained Farm</h3>
+        <p>This fundraiser supports the creation of a 2-acre self-sustainable farm—designed to generate food, income, and resources on its own. Donate now to help build a foundation that delivers lasting impact, not temporary relief.</p>
+    </div>
+    <div class="project-card">
+        <h3>Afforestation</h3>
+        <p>Support afforestation efforts that restore green cover, improve soil and air quality, and create long-term environmental impact. Your donation helps plant and protect trees that will sustain ecosystems for decades.</p>
+    </div>
+    <div class="project-card">
+        <h3>Dog Shelter</h3>
+        <p>Support the creation of a dog shelter that provides safety, food, and medical care to stray and abandoned dogs. Your donation helps build a secure space where dogs can heal, live with dignity, and be protected long-term.</p>
+    </div>
+    <div class="project-card">
+        <h3>Homeless Shelter</h3>
+        <p>Support the creation of a homeless shelter that provides safe accommodation, meals, and basic care to individuals in need. Your donation helps build a stable space where lives can begin to rebuild.</p>
+    </div>
+</section>
 
-    function toggleAdmin() {
-      const box = document.getElementById("adminBox");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    }
+<footer>
+    <a href="https://2-moon-automotive.netlify.app/" class="footer-btn website-btn">Visit Website</a>
+    <a href="https://wa.me/919003979426" class="footer-btn whatsapp-btn">WhatsApp</a>
+</footer>
 
-    function updateManualProgress() {
-      const pass = document.getElementById("adminPass").value.trim();
-      const newAmt = parseFloat(document.getElementById("newAmount").value);
+<script>
+/* CONFIG */
+const TARGET_AMOUNT = 20000000; // ₹2 Crore
+const ADMIN_PASSWORD = "Kabi2026"; // 🔐 CHANGE THIS
 
-      if (pass !== "2moonadmin") {
-        alert("Incorrect password.");
+/* ELEMENTS */
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+/* INITIAL AMOUNT */
+let currentAmount = 2200000;
+
+/* RENDER FUNCTION */
+function renderProgress(amount) {
+    const percent = Math.min((amount / TARGET_AMOUNT) * 100, 100);
+    progressBar.style.width = percent + "%";
+    progressText.innerText =
+        `Raised: ₹${amount.toLocaleString()} of ₹${TARGET_AMOUNT.toLocaleString()}`;
+}
+renderProgress(currentAmount);
+
+/* ADMIN UPDATE */
+function updateProgressAdmin() {
+    const pass = document.getElementById("adminPass").value;
+    const amount = Number(document.getElementById("adminAmount").value);
+
+    if (pass !== ADMIN_PASSWORD) {
+        alert("Incorrect admin password");
         return;
-      }
-      if (isNaN(newAmt) || newAmt < 0) {
-        alert("Enter a valid amount.");
+    }
+    if (amount < 0 || amount > TARGET_AMOUNT) {
+        alert("Enter amount between 0 and ₹2,00,00,000");
         return;
-      }
-
-      currentRaised = newAmt;
-      updateProgressDisplay();
-      alert("Progress updated successfully!");
-      document.getElementById("newAmount").value = "";
-      document.getElementById("adminPass").value = "";
-      document.getElementById("adminBox").style.display = "none";
     }
 
-    updateProgressDisplay();
-  </script>
+    currentAmount = amount;
+    renderProgress(currentAmount);
+    alert("Progress updated successfully");
+}
+
+/* SECRET KEY: CTRL + SHIFT + A */
+document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && e.shiftKey && e.key === "A") {
+        const panel = document.getElementById("adminPanel");
+        panel.style.display = panel.style.display === "none" ? "block" : "none";
+        alert("Admin Panel Toggled");
+    }
+});
+</script>
+
 </body>
 </html>
